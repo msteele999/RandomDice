@@ -5,12 +5,12 @@ You can rull multiple quantities of each dice type with the exception of the d10
 
 The output includes a text box and ASCII representations of each roll.
 
-   ╔═══════════════════════════════════════════╗
-   ║  Rolled 5d6:                              ║
-   ║  Individual die results: [1, 1, 4, 3, 5]  ║
-   ║  Total of 5 dice: 14                      ║
-   ║                                           ║
-   ╚═══════════════════════════════════════════╝
+╔═══════════════════════════════════════════╗
+║  Rolled 5d6:                              ║
+║  Individual die results: [1, 1, 4, 3, 5]  ║
+║  Total of 5 dice: 14                      ║
+║                                           ║
+╚═══════════════════════════════════════════╝
 
  _____     _____     _____     _____     _____ 
 |     |   |     |   |     |   |     |   |     |
