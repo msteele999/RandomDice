@@ -1,13 +1,24 @@
 import random
+import os
+
 from d4 import get_d4_faces
 from d6 import get_d6_faces
 from d8 import get_d8_faces
 from d10 import get_d10_faces
 from d12 import get_d12_faces
 from d20 import get_d20_faces
+from d100 import get_d100_faces
+
+def clear_screen():
+    # Check if the operating system is Windows
+    if os.name == 'nt':
+        os.system('cls')
+    # For Unix-based systems
+    else:
+        os.system('clear')
 
 def roll_dice(die_type, number_of_dice):
-    results = [random.randint(0 if die_type == 10 else 1, die_type) for _ in range(number_of_dice)]
+    results = [random.randint(0 if die_type == 100 else 1, die_type) for _ in range(number_of_dice)]
     total = sum(results)
     return total, results
 
@@ -29,6 +40,9 @@ def dice_face(die_type, number):
         return faces[number]
     elif die_type == 20:
         faces = get_d20_faces()
+        return faces[number]
+    elif die_type == 100:
+        faces = get_d100_faces()
         return faces[number]
     else:
         return [f"Rolled a {number}"]
@@ -68,6 +82,7 @@ def print_with_border(message):
     print('\033[0m')  # Reset color
 
 def main():
+    clear_screen()  # Clear the screen before displaying results
     print("Welcome to the Random Dice Generator!")
     while True:
         user_input = input("\nEnter the type of die to roll (4, 6, 8, 10, 12, 20, 100) or 'q' to quit: ").strip().lower()
