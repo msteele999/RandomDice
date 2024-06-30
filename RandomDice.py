@@ -1,9 +1,42 @@
 import random
+from d4 import get_d4_faces
+from d6 import get_d6_faces
+from d8 import get_d8_faces
+from d10 import get_d10_faces
+from d12 import get_d12_faces
 
 def roll_dice(die_type, number_of_dice):
     results = [random.randint(1, die_type) for _ in range(number_of_dice)]
     total = sum(results)
     return total, results
+
+def dice_face(die_type, number):
+    if die_type == 4:
+        faces = get_d4_faces()
+        return faces[number]
+    elif die_type == 6:
+        faces = get_d6_faces()
+        return faces[number]
+    elif die_type == 8:
+        faces = get_d8_faces()
+        return faces[number]
+    elif die_type == 10:
+        faces = get_d10_faces()
+        return faces[number]
+    elif die_type == 12:
+        faces = get_d12_faces()
+        return faces[number]
+    else:
+        return [f"Rolled a {number}"]
+
+def print_dice_faces(die_type, results):
+    if die_type in [4, 6, 8, 10, 12]:
+        faces = [dice_face(die_type, result) for result in results]
+        for line in range(len(faces[0])):
+            print("   ".join(face[line] for face in faces))
+    else:
+        print("Non-graphical representation for non-4, non-6, or non-8-sided dice.")
+        print("Results: ", results)
 
 def print_with_border(message):
     top_left = '╔'
@@ -46,12 +79,16 @@ def main():
             
             number_of_dice = int(number_of_dice)
             total, results = roll_dice(die_type, number_of_dice)
+            
             result_message = (
                 f"Rolled {number_of_dice}d{die_type}:\n"
                 f"Individual die results: {results}\n"
-                f"Total of {number_of_dice} dice: {total}"
+                f"Total of {number_of_dice} dice: {total}\n"
             )
+            
             print_with_border(result_message)
+            
+            print_dice_faces(die_type, results)
         else:
             print("Invalid input. Please enter a number for the type of die or 'q' to quit.")
 
