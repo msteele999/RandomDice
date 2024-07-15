@@ -1,28 +1,31 @@
 import random
 import os
 
-from d4 import get_d4_faces
-from d6 import get_d6_faces
-from d8 import get_d8_faces
-from d10 import get_d10_faces
-from d12 import get_d12_faces
-from d20 import get_d20_faces
-from d100 import get_d100_faces
+# Importing the face retrieval functions from different modules
+from data.d4 import get_d4_faces
+from data.d6 import get_d6_faces
+from data.d8 import get_d8_faces
+from data.d10 import get_d10_faces
+from data.d12 import get_d12_faces
+from data.d20 import get_d20_faces
+from data.d100 import get_d100_faces
 
 def clear_screen():
-    # Check if the operating system is Windows
-    if os.name == 'nt':
+    # Clears the console screen based on the operating system
+    if os.name == 'nt':  # If the system is Windows
         os.system('cls')
-    # For Unix-based systems
-    else:
+    else:  # For Unix-based systems (Linux, macOS, etc.)
         os.system('clear')
 
 def roll_dice(die_type, number_of_dice):
+    # Rolls the specified number of dice and returns the total and individual results
+    # If die_type is 100, rolls between 0 and 100 (inclusive), otherwise rolls between 1 and die_type (inclusive)
     results = [random.randint(0 if die_type == 100 else 1, die_type) for _ in range(number_of_dice)]
-    total = sum(results)
-    return total, results
+    total = sum(results)  # Calculates the sum of all dice rolls
+    return total, results  # Returns the total and a list of individual results
 
 def dice_face(die_type, number):
+    # Retrieves the ASCII face representation for the given die type and number
     if die_type == 4:
         faces = get_d4_faces()
         return faces[number]
@@ -45,24 +48,29 @@ def dice_face(die_type, number):
         faces = get_d100_faces()
         return faces[number]
     else:
-        return [f"Rolled a {number}"]
+        return [f"Rolled a {number}"]  # Default case for unsupported dice types
 
 def print_dice_faces(die_type, results):
+    # Prints the ASCII faces for the rolled dice results
     if die_type in [4, 6, 8, 10, 12, 20]:
+        # For supported dice types, get and print their ASCII faces
         faces = [dice_face(die_type, result) for result in results]
-        for line in range(len(faces[0])):
+        for line in range(len(faces[0])):  # Assumes all faces have the same number of lines
             print("   ".join(face[line] for face in faces))
     elif die_type == 100:
+        # Special handling for d100, splits the result into tens and units
         tens = results[0] // 10
         units = results[0] % 10
         faces = [dice_face(10, tens), dice_face(10, units)]
-        for line in range(len(faces[0])):
+        for line in range(len(faces[0])):  # Assumes all faces have the same number of lines
             print("      ".join(face[line] for face in faces))
     else:
+        # Default case for unsupported dice types
         print("Non-graphical representation for non-4, non-6, non-8, non-10, non-12, non-20, or non-100-sided dice.")
         print("Results: ", results)
 
 def print_with_border(message):
+    # Prints a message with a decorative border
     top_left = '╔'
     top_right = '╗'
     bottom_left = '╚'
@@ -70,9 +78,9 @@ def print_with_border(message):
     horizontal = '═'
     vertical = '║'
     padding = 2
-    lines = message.split('\n')
-    max_length = max(len(line) for line in lines)
-    width = max_length + padding * 2
+    lines = message.split('\n')  # Splits the message into lines
+    max_length = max(len(line) for line in lines)  # Finds the length of the longest line
+    width = max_length + padding * 2  # Calculates the width of the border
     
     print('\033[44m\033[37m')  # Set background to blue and text to white
     print(' ' * (padding + 1) + top_left + horizontal * width + top_right)
@@ -92,21 +100,21 @@ def main():
             break
         
         if user_input.isdigit():
-            die_type = int(user_input)
+            die_type = int(user_input)  # Converts the input to an integer
             if die_type not in [4, 6, 8, 10, 12, 20, 100]:
                 print("Invalid die type. Please enter one of the following: 4, 6, 8, 10, 12, 20, 100.")
                 continue
             
             if die_type == 100:
-                number_of_dice = 1
+                number_of_dice = 1  # For d100, only one die is rolled
             else:
                 number_of_dice = input(f"\nHow many {die_type}-sided dice would you like to roll? ").strip()
                 if not number_of_dice.isdigit():
                     print("Invalid number of dice. Please enter a positive integer.")
                     continue
-                number_of_dice = int(number_of_dice)
+                number_of_dice = int(number_of_dice)  # Converts the input to an integer
             
-            total, results = roll_dice(die_type, number_of_dice)
+            total, results = roll_dice(die_type, number_of_dice)  # Rolls the dice
             
             result_message = (
                 f"Rolled {number_of_dice}d{die_type}:\n"
@@ -114,11 +122,11 @@ def main():
                 f"Total of {number_of_dice} dice: {total}\n"
             )
             
-            print_with_border(result_message)
+            print_with_border(result_message)  # Prints the results with a decorative border
             
-            print_dice_faces(die_type, results)
+            print_dice_faces(die_type, results)  # Prints the ASCII faces of the dice
         else:
             print("Invalid input. Please enter a number for the type of die or 'q' to quit.")
 
 if __name__ == "__main__":
-    main()
+    main()  # Entry point of the program
